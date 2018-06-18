@@ -3,9 +3,10 @@ import { addBoard, showBoard, deleteBoard } from '../actions/homeAction'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Lanes from './components/Lanes'
-
+import Header from '../pages/components/Header'
 const Root = styled.div`
-  backgroud-color: #f8f8fb;
+  height: 100vh;
+  background: #f6f6fb;
 `
 class HomePage extends Component {
   state = {
@@ -31,6 +32,9 @@ class HomePage extends Component {
     console.log(this.props.boards)
     return (
       <Root>
+        <Header />
+        <br />
+        <br />
         <p>Add new Board</p>
         <input onChange={this.handleChange} value={this.state.boardName} />
         <button onClick={this.handleClick}>Add</button>

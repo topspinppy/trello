@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import AddCard from './AddCard'
 import Cards from './Cards'
+import { Container, Row, Col } from 'reactstrap'
 
 const Containers = styled.div`
   white-space: nowrap;
@@ -14,7 +15,6 @@ const Board = styled.div`
   height: 800px;
   background-color: #bebebe;
   margin-right: 50px;
-  overflow: scroll;
 `
 const ColumnTitle = styled.div`
   color: white;
@@ -39,10 +39,7 @@ const Card = styled.div`
   word-wrap: break-word;
   white-space: normal;
 `
-const Footer = styled.div`
-  margin-left: 35%;
-  font-size: 23px;
-`
+const Footer = styled.div``
 
 class LanesList extends Component {
   state = {
