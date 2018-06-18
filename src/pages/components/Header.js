@@ -15,8 +15,8 @@ class Header extends Component {
       <div>
         <Navbar
           style={{ 'box-shadow': '5px 3px 28px -15px rgba(0,0,0,0.75)' }}
-          color="white"
-          light
+          color="light"
+          fixed="top"
           expand="md"
         >
           <NavbarBrands href="/">

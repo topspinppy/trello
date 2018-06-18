@@ -5,8 +5,29 @@ import styled from 'styled-components'
 import Lanes from './components/Lanes'
 import Header from '../pages/components/Header'
 const Root = styled.div`
-  height: 100vh;
-  background: #f6f6fb;
+  white-space: nowrap;
+  .lists-container {
+    display: flex;
+    align-items: start;
+    padding: 0 0.8rem 0.8rem;
+    overflow-x: auto;
+    height: calc(100vh - 8.6rem);
+    white-space: nowrap;
+  }
+
+  .add-card {
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: #838c91;
+    padding: 1rem;
+    cursor: pointer;
+  }
+
+  .add-card:hover {
+    background-color: #cdd2d4;
+    color: #4d4d4d;
+    text-decoration: underline;
+  }
 `
 class HomePage extends Component {
   state = {
@@ -35,7 +56,8 @@ class HomePage extends Component {
         <Header />
         <br />
         <br />
-        <p>Add new Board</p>
+        <br />
+        <br />
         <input onChange={this.handleChange} value={this.state.boardName} />
         <button onClick={this.handleClick}>Add</button>
         <Lanes

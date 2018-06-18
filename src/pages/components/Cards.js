@@ -1,18 +1,11 @@
 import React, { Component } from 'react'
-import {
-  Card,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Button
-} from 'reactstrap'
 
 class Cards extends Component {
   render() {
     return (
-      <div>
-        <Card>
+      <li>
+        {this.props.card.namecards}
+        {/* <Card>
           <CardBody>
             <CardTitle>{this.props.card.namecards}</CardTitle>
             <CardSubtitle>Card subtitle</CardSubtitle>
@@ -22,8 +15,8 @@ class Cards extends Component {
             </CardText>
             <Button>Button</Button>
           </CardBody>
-        </Card>
-      </div>
+        </Card> */}
+      </li>
     )
   }
 }
