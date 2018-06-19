@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { addCard } from '../../actions/homeAction'
 import { connect } from 'react-redux'
-
+import { Input } from 'reactstrap'
 class AddCard extends Component {
   state = {
     changeAdd: ''
@@ -17,9 +17,9 @@ class AddCard extends Component {
     console.log('ttttt', this.props)
     return (
       <div>
-        <input
+        <Input
+          type="textarea"
           placeholder="Enter card description"
-          type="text"
           onChange={this.handleChangeAdd}
         />
         <br />

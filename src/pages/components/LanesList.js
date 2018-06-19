@@ -121,25 +121,26 @@ class LanesList extends Component {
     return (
       <Board>
         <div class="list">
-          <h3 class="list-title"> {this.props.board.namelanes} </h3>{' '}
-          <ul class="list-items"> {card} </ul>{' '}
+          <h3 class="list-title"> {this.props.board.namelanes} </h3>
+          <ul class="list-items"> {card} </ul>
           <button
             type="submit"
             onClick={e => this.props.handleDeleteBoard(e, this.props.board._id)}
           >
-            ลบ{' '}
-          </button>{' '}
-          <Footer>
-            <a onClick={this.handleAddCard}> AddCard </a>{' '}
-            {this.state.isAddCard ? (
-              <AddCard
-                idcard={this.props.board._id}
-                handleCancel={this.handleCancel}
-              />
-            ) : null}{' '}
-          </Footer>{' '}
-          <div class="add-card"> Add a card... </div>{' '}
-        </div>{' '}
+            ลบ
+          </button>
+          {this.state.isAddCard ? (
+            <AddCard
+              idcard={this.props.board._id}
+              handleCancel={this.handleCancel}
+            />
+          ) : (
+            <div onClick={this.handleAddCard} class="add-card">
+              {' '}
+              Add a card...{' '}
+            </div>
+          )}
+        </div>
       </Board>
     )
   }
