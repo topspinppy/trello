@@ -52,4 +52,9 @@ const addCard = (lanes, namecards) => dispatch => {
   })
 }
 
-export { addBoard, showBoard, deleteBoard, addCard }
+const addBoardName = text => dispatch => ({
+  type: 'ADD_BOARDNAME',
+  payload: text
+})
+
+export { addBoard, showBoard, deleteBoard, addCard, addBoardName }

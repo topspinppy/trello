@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
   boards: [],
-  cards: []
+  boardName: ''
 }
 const homes = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -12,6 +12,8 @@ const homes = (state = INITIAL_STATE, action) => {
       return { ...state, boards: action.payload }
     case 'ADD_CARD':
       return { ...state, boards: action.payload }
+    case 'ADD_BOARDNAME':
+      return { ...state, boardName: action.payload }
     default:
       return state //Return Initial State ลกับไปที่หน้าบ้าน ซึ่งเป็นตัวเดิมที่ส่งมา
   }

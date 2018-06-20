@@ -11,6 +11,7 @@ class AddCard extends Component {
   }
   handleAddCardToLens = (e, id) => {
     e.stopPropagation()
+    this.setState({ changeAdd: '' })
     this.props.handleAddCard(id, this.state.changeAdd)
   }
   render() {
@@ -20,12 +21,14 @@ class AddCard extends Component {
         <Input
           type="textarea"
           placeholder="Enter card description"
+          style={{ margin: '9px', width: '362px' }}
           onChange={this.handleChangeAdd}
+          value={this.state.changeAdd}
         />
-        <br />
         <div className="btn-group">
           <button
             className="btn btn-success"
+            style={{ 'margin-left': '10px' }}
             onClick={e => this.handleAddCardToLens(e, this.props.idcard)}
           >
             Save
@@ -34,6 +37,8 @@ class AddCard extends Component {
             Cancel
           </button>
         </div>
+        <br />
+        <br />
       </div>
     )
   }

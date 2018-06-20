@@ -36,15 +36,7 @@ class HomePage extends Component {
   componentDidMount() {
     this.props.handleShowBoard()
   }
-  handleChange = e => {
-    this.setState({ boardName: e.target.value })
-  }
 
-  handleClick = () => {
-    // console.log(this.state.boardName)
-    this.props.handleAddBoard(this.state.boardName)
-    this.setState({ boardName: '' })
-  }
   handleDeleteBoard = (e, id) => {
     e.stopPropagation()
     this.props.handleDeleteBoard(id)
@@ -56,14 +48,13 @@ class HomePage extends Component {
         <Header />
         <br />
         <br />
-        <br />
-        <br />
-        <input onChange={this.handleChange} value={this.state.boardName} />
-        <button onClick={this.handleClick}>Add</button>
+        {/* <input onChange={this.handleChange} value={this.state.boardName} />
+        <button onClick={this.handleClick}>Add</button> */}
         <Lanes
           handleToggleAddCard={this.handleToggleAddCard}
           boards={this.props.boards}
           handleDeleteBoard={this.handleDeleteBoard}
+          handleAddBoard={this.props.handleAddBoard}
         />
       </Root>
     )

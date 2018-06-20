@@ -4,10 +4,17 @@ import styled from 'styled-components'
 import AddCard from './AddCard'
 import Cards from './Cards'
 import { Container, Row, Col } from 'reactstrap'
+import {
+  Menu,
+  Dropdown,
+  Icon,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from 'antd'
 
-const Containers = styled.div`
-  white-space: nowrap;
-`
 const Board = styled.div`
   float: left;
   .list {
@@ -31,6 +38,10 @@ const Board = styled.div`
     font-weight: 700;
     color: #333;
     padding: 1rem;
+    .menudropdown {
+      position: absolute;
+      right: 20px;
+    }
   }
 
   .list-items {
@@ -66,42 +77,19 @@ const Board = styled.div`
   }
 
   .list-items li:last-of-type {
-    margin-bottom: 0;
+    margin-bottom: 10px;
   }
 
   .list-items li:hover {
     background-color: #eee;
   }
 `
-const ColumnTitle = styled.div`
-  color: white;
-  /* font-style: oblique; */
-  font-size: x-large;
-  font-weight: bold;
-  text-transform: capitalize;
-  padding: 10px;
-  text-align: justify;
-  border-radius: 10px;
-`
-const Card = styled.div`
-  flex: 1 1 auto;
-  margin-bottom: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin: 0 4px;
-  padding: 0 4px;
-  z-index: 1;
-  min-height: 0;
-  text-decoration: none;
-  word-wrap: break-word;
-  white-space: normal;
-`
-const Footer = styled.div``
 
 class LanesList extends Component {
   state = {
     isAddCard: false
   }
+
   handleAddCard = () => {
     this.setState({
       isAddCard: true
@@ -118,24 +106,46 @@ class LanesList extends Component {
     const card = this.props.board.cards.map(card => (
       <Cards key={card._id} card={card} />
     ))
-    return (
-      <Board>
-        <div class="list">
-          <h3 class="list-title"> {this.props.board.namelanes} </h3>
-          <ul class="list-items"> {card} </ul>
-          <button
-            type="submit"
+
+    const menu = (
+      <Menu>
+        <Menu.Item>
+          <a
             onClick={e => this.props.handleDeleteBoard(e, this.props.board._id)}
           >
-            ลบ
-          </button>
+            DeleteCard
+          </a>
+        </Menu.Item>
+      </Menu>
+    )
+
+    return (
+      <Board>
+        <div className="list">
+          <h3 className="list-title">
+            <Row>
+              <Col>{this.props.board.namelanes}</Col>
+              <Col>
+                <Dropdown overlay={menu} className="menudropdown">
+                  <a className="ant-dropdown-link">
+                    <Icon type="ellipsis" />
+                  </a>
+                </Dropdown>
+              </Col>
+            </Row>
+            {/* <button type="submit" onClick={e => this.props.handleDeleteBoard(e, this.props.board._id)} > ลบ </button> */}
+          </h3>
+          <ul className="list-items" style={{ 'word-wrap': 'break-word' }}>
+            {' '}
+            {card}{' '}
+          </ul>{' '}
           {this.state.isAddCard ? (
             <AddCard
               idcard={this.props.board._id}
               handleCancel={this.handleCancel}
             />
           ) : (
-            <div onClick={this.handleAddCard} class="add-card">
+            <div onClick={this.handleAddCard} className="add-card">
               {' '}
               Add a card...{' '}
             </div>

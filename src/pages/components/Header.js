@@ -23,6 +23,10 @@ class Header extends Component {
             <img src={logotrello} width="90px" alt="trello" />
           </NavbarBrands>
         </Navbar>
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     )
   }
