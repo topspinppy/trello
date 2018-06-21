@@ -3,6 +3,7 @@ import { addBoardName } from '../../actions/homeAction'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import LanesList from './LanesList'
+import { Button, Input } from 'reactstrap'
 
 const Containers = styled.div`
   white-space: nowrap;
@@ -35,7 +36,12 @@ class Lanes extends Component {
   handleChange = e => {
     this.setState({ boardName: e.target.value })
   }
-
+  handleCloseCard = () => {
+    this.setState({ openCard: false })
+  }
+  handleOpenCard = () => {
+    this.setState({ openCard: true })
+  }
   handleClick = (e, text) => {
     // console.log(this.state.boardName)
     e.stopPropagation()
@@ -45,6 +51,8 @@ class Lanes extends Component {
   render() {
     const lanes = this.props.boards.map(board => (
       <LanesList
+        handleDeleteCard={this.props.handleDeleteCard}
+        editCard={this.props.editCard}
         key={board._id}
         board={board}
         handleDeleteBoard={this.props.handleDeleteBoard}
@@ -55,10 +63,28 @@ class Lanes extends Component {
         <section className="lists-container">
           {lanes}
           <div className="list">
-            <input onChange={this.handleChange} value={this.state.boardName} />
-            <button onClick={e => this.handleClick(e, this.state.boardName)}>
-              Add
-            </button>
+            {this.state.openCard ? (
+              <div style={{ padding: '9px' }}>
+                <Input
+                  onChange={this.handleChange}
+                  value={this.state.boardName}
+                />
+                <Button
+                  style={{ 'margin-top': '6px' }}
+                  onClick={e => this.handleClick(e, this.state.boardName)}
+                >
+                  Add
+                </Button>
+                <a
+                  style={{ 'margin-left': '18px' }}
+                  onClick={this.handleCloseCard}
+                >
+                  <i class="fas fa-times" />
+                </a>
+              </div>
+            ) : (
+              <div onClick={this.handleOpenCard}>"Add a list..."</div>
+            )}
           </div>
         </section>
       </Containers>

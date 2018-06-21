@@ -25,6 +25,8 @@ class Cards extends Component {
           </div>
         </li>
         <ModalData
+          handleDeleteCard={this.props.handleDeleteCard}
+          editCard={this.props.editCard}
           data={this.props.card}
           isOpen={this.state.modal}
           toggle={this.toggle}

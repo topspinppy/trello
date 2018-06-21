@@ -57,4 +57,36 @@ const addBoardName = text => dispatch => ({
   payload: text
 })
 
-export { addBoard, showBoard, deleteBoard, addCard, addBoardName }
+const editCard = (_id, description) => dispatch => {
+  let data = {
+    _id,
+    description
+  }
+  console.log('data = ', data)
+  axios.patch(`${apiURL}manage/cardsdescription`, data).then(response => {
+    dispatch({
+      type: 'ADD_BOARDNAME',
+      payload: response.data
+    })
+  })
+}
+const deleteCard = _id => dispatch => {
+  console.log('datadel = ', _id)
+  axios.delete(`${apiURL}manage/cards/${_id}`).then(response => {
+    dispatch({
+      type: 'DELETE_CARD',
+      payload: response.data
+    })
+    console.log('responsessss ', response)
+  })
+}
+
+export {
+  addBoard,
+  showBoard,
+  deleteBoard,
+  addCard,
+  addBoardName,
+  editCard,
+  deleteCard
+}

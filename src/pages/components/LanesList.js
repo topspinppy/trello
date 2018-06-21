@@ -104,7 +104,12 @@ class LanesList extends Component {
   render() {
     console.log('ddd', this.props.board)
     const card = this.props.board.cards.map(card => (
-      <Cards key={card._id} card={card} />
+      <Cards
+        handleDeleteCard={this.props.handleDeleteCard}
+        editCard={this.props.editCard}
+        key={card._id}
+        card={card}
+      />
     ))
 
     const menu = (
@@ -133,7 +138,6 @@ class LanesList extends Component {
                 </Dropdown>
               </Col>
             </Row>
-            {/* <button type="submit" onClick={e => this.props.handleDeleteBoard(e, this.props.board._id)} > ลบ </button> */}
           </h3>
           <ul className="list-items" style={{ 'word-wrap': 'break-word' }}>
             {' '}

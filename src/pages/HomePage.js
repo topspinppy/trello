@@ -1,5 +1,11 @@
 import React, { Component } from 'react'
-import { addBoard, showBoard, deleteBoard } from '../actions/homeAction'
+import {
+  addBoard,
+  showBoard,
+  deleteBoard,
+  editCard,
+  deleteCard
+} from '../actions/homeAction'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Lanes from './components/Lanes'
@@ -36,10 +42,17 @@ class HomePage extends Component {
   componentDidMount() {
     this.props.handleShowBoard()
   }
-
   handleDeleteBoard = (e, id) => {
     e.stopPropagation()
     this.props.handleDeleteBoard(id)
+  }
+  handleEditCard = (e, id, txt) => {
+    e.stopPropagation()
+    this.props.handleEditCard(id, txt)
+  }
+  handleDeleteCard = (e, id) => {
+    e.stopPropagation()
+    this.props.handleDeleteCard(id)
   }
   render() {
     console.log(this.props.boards)
@@ -48,13 +61,13 @@ class HomePage extends Component {
         <Header />
         <br />
         <br />
-        {/* <input onChange={this.handleChange} value={this.state.boardName} />
-        <button onClick={this.handleClick}>Add</button> */}
         <Lanes
+          editCard={this.handleEditCard}
           handleToggleAddCard={this.handleToggleAddCard}
           boards={this.props.boards}
           handleDeleteBoard={this.handleDeleteBoard}
           handleAddBoard={this.props.handleAddBoard}
+          handleDeleteCard={this.handleDeleteCard}
         />
       </Root>
     )
@@ -68,8 +81,14 @@ const mapDispatchToProps = dispatch => {
     handleShowBoard() {
       dispatch(showBoard())
     },
-    handleDeleteBoard(id) {
-      dispatch(deleteBoard(id))
+    handleDeleteBoard(id, txt) {
+      dispatch(deleteBoard(id, txt))
+    },
+    handleEditCard(id, txt) {
+      dispatch(editCard(id, txt))
+    },
+    handleDeleteCard(id) {
+      dispatch(deleteCard(id))
     }
   }
 }
