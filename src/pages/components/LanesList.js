@@ -102,7 +102,6 @@ class LanesList extends Component {
     })
   }
   render() {
-    console.log('ddd', this.props.board)
     const card = this.props.board.cards.map(card => (
       <Cards
         handleDeleteCard={this.props.handleDeleteCard}

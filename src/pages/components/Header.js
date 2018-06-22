@@ -14,7 +14,7 @@ class Header extends Component {
     return (
       <div>
         <Navbar
-          style={{ 'box-shadow': '5px 3px 28px -15px rgba(0,0,0,0.75)' }}
+          style={{ boxShadow: '5px 3px 28px -15px rgba(0,0,0,0.75)' }}
           color="light"
           fixed="top"
           expand="md"

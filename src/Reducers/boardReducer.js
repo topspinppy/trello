@@ -15,9 +15,9 @@ const homes = (state = INITIAL_STATE, action) => {
     case 'ADD_BOARDNAME':
       return { ...state, boardName: action.payload }
     case 'EDIT_CARD':
-      return { ...state, board: action.payload }
+      return { ...state, boards: action.payload }
     case 'DELETE_CARD':
-      return { ...state, board: action.payload }
+      return { ...state, boards: action.payload }
     default:
       return state //Return Initial State ลกับไปที่หน้าบ้าน ซึ่งเป็นตัวเดิมที่ส่งมา
   }

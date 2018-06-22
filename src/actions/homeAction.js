@@ -71,13 +71,11 @@ const editCard = (_id, description) => dispatch => {
   })
 }
 const deleteCard = _id => dispatch => {
-  console.log('datadel = ', _id)
   axios.delete(`${apiURL}manage/cards/${_id}`).then(response => {
     dispatch({
       type: 'DELETE_CARD',
       payload: response.data
     })
-    console.log('responsessss ', response)
   })
 }
 

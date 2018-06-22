@@ -16,6 +16,11 @@ class Cards extends Component {
     })
   }
 
+  handleDeleteCard = (e, id) => {
+    this.props.handleDeleteCard(e, id)
+    this.setState({ modal: false })
+  }
+
   render() {
     return (
       <div>
@@ -25,7 +30,7 @@ class Cards extends Component {
           </div>
         </li>
         <ModalData
-          handleDeleteCard={this.props.handleDeleteCard}
+          handleDeleteCards={this.handleDeleteCard}
           editCard={this.props.editCard}
           data={this.props.card}
           isOpen={this.state.modal}

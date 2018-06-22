@@ -21,8 +21,8 @@ class ModalData extends Component {
     this.props.editCard(e, id, txt)
     this.setState({ description: txt, descriptiontoggleedit: false })
   }
+  handleDel = () => {}
   handleChange = (field, e) => {
-    console.log(e.target.value)
     this.setState({
       [field]: e.target.value
     })
@@ -78,8 +78,7 @@ class ModalData extends Component {
                             )
                           }
                         >
-                          {' '}
-                          Save !
+                          Save ffff
                         </button>
                         &nbsp;&nbsp;&nbsp;
                       </div>
@@ -105,7 +104,7 @@ class ModalData extends Component {
                 <Col xs="14">
                   <Button
                     onClick={e =>
-                      this.props.handleDeleteCard(e, this.props.data._id)
+                      this.props.handleDeleteCards(e, this.props.data._id)
                     }
                     color="danger"
                     block

@@ -3,7 +3,9 @@ import { addBoardName } from '../../actions/homeAction'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import LanesList from './LanesList'
+import { DropTarget } from 'react-dnd'
 import { Button, Input } from 'reactstrap'
+import PropTypes from 'prop-types'
 
 const Containers = styled.div`
   white-space: nowrap;
@@ -43,7 +45,6 @@ class Lanes extends Component {
     this.setState({ openCard: true })
   }
   handleClick = (e, text) => {
-    // console.log(this.state.boardName)
     e.stopPropagation()
     this.props.handleAddBoard(this.state.boardName)
     this.setState({ boardName: '' })

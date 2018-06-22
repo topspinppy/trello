@@ -10,6 +10,9 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Lanes from './components/Lanes'
 import Header from '../pages/components/Header'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
 const Root = styled.div`
   white-space: nowrap;
   .lists-container {
@@ -54,8 +57,9 @@ class HomePage extends Component {
     e.stopPropagation()
     this.props.handleDeleteCard(id)
   }
+
   render() {
-    console.log(this.props.boards)
+    console.log('Homepage props =', this.props)
     return (
       <Root>
         <Header />
@@ -97,7 +101,9 @@ const mapStateToProps = state => {
     boards: state.homes.boards
   }
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HomePage)
+export default DragDropContext(HTML5Backend)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(HomePage)
+)
