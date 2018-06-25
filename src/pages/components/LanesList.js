@@ -101,6 +101,10 @@ class LanesList extends Component {
       isAddCard: false
     })
   }
+  handleDrop = draggedProps => {
+    console.log('You Dropped', draggedProps.name)
+  }
+
   render() {
     const card = this.props.board.cards.map(card => (
       <Cards
@@ -139,9 +143,8 @@ class LanesList extends Component {
             </Row>
           </h3>
           <ul className="list-items" style={{ 'word-wrap': 'break-word' }}>
-            {' '}
-            {card}{' '}
-          </ul>{' '}
+            {card}
+          </ul>
           {this.state.isAddCard ? (
             <AddCard
               idcard={this.props.board._id}
