@@ -28,7 +28,7 @@ class AddCard extends Component {
         <div className="btn-group">
           <button
             className="btn btn-success"
-            style={{ 'margin-left': '10px' }}
+            style={{ marginLeft: '10px' }}
             onClick={e => this.handleAddCardToLens(e, this.props.idcard)}
           >
             Save

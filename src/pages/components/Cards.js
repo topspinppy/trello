@@ -1,5 +1,24 @@
 import React, { Component } from 'react'
 import ModalData from './ModalData'
+import { DragSource } from 'react-dnd'
+import { DropTarget } from 'react-dnd'
+
+// const boardSource = {
+//   beginDrag(props, component) {
+//     console.log("beginDrag" , props)
+//     const item = {
+//       id: props.key,
+//       title: props.card.namecards,
+//       index: props.index,
+//     }
+//     return item
+//   },
+
+//   isDragging(props, monitor) {
+//     return props.id === monitor.getItem().id
+//   },
+// }
+
 class Cards extends Component {
   constructor(props) {
     super(props)
@@ -25,7 +44,7 @@ class Cards extends Component {
     return (
       <div>
         <li onClick={this.toggle}>
-          <div style={{ 'white-space': 'normal' }}>
+          <div style={{ whiteSpace: 'normal' }}>
             {this.props.card.namecards}
           </div>
         </li>

@@ -18,3 +18,15 @@ ReactDOM.render(
   document.getElementById('root')
 )
 registerServiceWorker()
+
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default
+    ReactDOM.render(
+      <Provider store={store}>
+        <NextApp />
+      </Provider>,
+      document.getElementById('root')
+    )
+  })
+}

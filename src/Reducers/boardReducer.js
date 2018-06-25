@@ -18,6 +18,9 @@ const homes = (state = INITIAL_STATE, action) => {
       return { ...state, boards: action.payload }
     case 'DELETE_CARD':
       return { ...state, boards: action.payload }
+    case 'MOVE_BOARD':
+      console.log('moveboard', action.payload)
+      return { ...state, boards: action.payload }
     default:
       return state //Return Initial State ลกับไปที่หน้าบ้าน ซึ่งเป็นตัวเดิมที่ส่งมา
   }

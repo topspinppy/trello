@@ -1,4 +1,5 @@
 import axios from 'axios'
+let _ = require('lodash')
 //ต้องกำหนด Export ในทุก Action
 
 // export const addBoard = text => ({
@@ -70,6 +71,7 @@ const editCard = (_id, description) => dispatch => {
     })
   })
 }
+
 const deleteCard = _id => dispatch => {
   axios.delete(`${apiURL}manage/cards/${_id}`).then(response => {
     dispatch({
@@ -77,6 +79,30 @@ const deleteCard = _id => dispatch => {
       payload: response.data
     })
   })
+}
+const moveBoard = (item, allBoard) => dispatch => {
+  console.log('moveBoard Action !!')
+  const boards = Array.from(allBoard)
+  const startIndex = item.source.sourceIdx
+  const endIndex = item.target.targetIdx
+
+  //Remove Source Board
+  const [removed] = boards.splice(startIndex, 1)
+  //Insert Source Board to targetIndex
+  boards.splice(endIndex, 0, removed)
+
+  //Now We have NewBoards
+  console.log('Newboards =', boards)
+
+  //Update Backend here
+  axios.patch(`${apiURL}lanes/sortlanes`, boards).then(response => {
+    console.log(response)
+    dispatch({
+      type: 'MOVE_BOARD',
+      payload: response.data
+    })
+  })
+  //Then update our state
 }
 
 export {
@@ -86,5 +112,6 @@ export {
   addCard,
   addBoardName,
   editCard,
-  deleteCard
+  deleteCard,
+  moveBoard
 }

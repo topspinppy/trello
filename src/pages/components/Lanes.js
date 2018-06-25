@@ -50,11 +50,12 @@ class Lanes extends Component {
     this.setState({ boardName: '' })
   }
   render() {
-    const lanes = this.props.boards.map(board => (
+    const lanes = this.props.boards.map((board, index) => (
       <LanesList
         handleDeleteCard={this.props.handleDeleteCard}
         editCard={this.props.editCard}
         key={board._id}
+        index={index}
         board={board}
         handleDeleteBoard={this.props.handleDeleteBoard}
       />
@@ -71,16 +72,16 @@ class Lanes extends Component {
                   value={this.state.boardName}
                 />
                 <Button
-                  style={{ 'margin-top': '6px' }}
+                  style={{ marginTop: '6px' }}
                   onClick={e => this.handleClick(e, this.state.boardName)}
                 >
                   Add
                 </Button>
                 <a
-                  style={{ 'margin-left': '18px' }}
+                  style={{ marginLeft: '18px' }}
                   onClick={this.handleCloseCard}
                 >
-                  <i class="fas fa-times" />
+                  <i className="fas fa-times" />
                 </a>
               </div>
             ) : (

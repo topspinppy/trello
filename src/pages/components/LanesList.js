@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import AddCard from './AddCard'
+import { DragSource } from 'react-dnd'
+import { DropTarget } from 'react-dnd'
 import Cards from './Cards'
 import { Container, Row, Col } from 'reactstrap'
+import { moveBoard } from '../../actions/homeAction'
 import {
   Menu,
   Dropdown,
@@ -14,6 +17,60 @@ import {
   ModalBody,
   ModalFooter
 } from 'antd'
+
+const boardSource = {
+  beginDrag(props, component) {
+    console.log('beginDrag', props)
+    const item = {
+      id: props.board.id,
+      title: props.board.namelanes,
+      index: props.index
+    }
+    return item
+  },
+
+  isDragging(props, monitor) {
+    return props.id === monitor.getItem().id
+  }
+}
+
+const boardTarget = {
+  drop(targetProps, monitor, component) {
+    console.log('targetDrop', targetProps)
+    const targetId = targetProps.board._id
+    const targetIdx = targetProps.index
+
+    const sourceProps = monitor.getItem()
+    const sourceId = sourceProps.id
+    const sourceType = monitor.getItemType()
+    const sourceIdx = sourceProps.index
+    const item = {
+      source: {
+        sourceId,
+        sourceIdx
+      },
+      target: {
+        targetId,
+        targetIdx
+      }
+    }
+
+    if (targetId !== sourceId && sourceType === 'BOARD') {
+      targetProps.onMoveBoard(item, targetProps.boards)
+    }
+  }
+}
+
+const collectDragSource = (DnDconnect, monitor) => ({
+  connectDragSource: DnDconnect.dragSource(),
+  connectDragPreview: DnDconnect.dragPreview(),
+  isDragging: monitor.isDragging()
+})
+
+const collectDropTarget = (DnDconnect, monitor) => ({
+  connectDropTarget: DnDconnect.dropTarget(),
+  isOver: monitor.isOver()
+})
 
 const Board = styled.div`
   float: left;
@@ -106,10 +163,17 @@ class LanesList extends Component {
   }
 
   render() {
-    const card = this.props.board.cards.map(card => (
+    const {
+      connectDragPreview,
+      connectDropTarget,
+      connectDragSource
+    } = this.props
+    console.log('data = ', this.props.board)
+    const card = this.props.board.cards.map((card, index) => (
       <Cards
         handleDeleteCard={this.props.handleDeleteCard}
         editCard={this.props.editCard}
+        index={index}
         key={card._id}
         card={card}
       />
@@ -127,39 +191,64 @@ class LanesList extends Component {
       </Menu>
     )
 
-    return (
-      <Board>
-        <div className="list">
-          <h3 className="list-title">
-            <Row>
-              <Col>{this.props.board.namelanes}</Col>
-              <Col>
-                <Dropdown overlay={menu} className="menudropdown">
-                  <a className="ant-dropdown-link">
-                    <Icon type="ellipsis" />
-                  </a>
-                </Dropdown>
-              </Col>
-            </Row>
-          </h3>
-          <ul className="list-items" style={{ 'word-wrap': 'break-word' }}>
-            {card}
-          </ul>
-          {this.state.isAddCard ? (
-            <AddCard
-              idcard={this.props.board._id}
-              handleCancel={this.handleCancel}
-            />
-          ) : (
-            <div onClick={this.handleAddCard} className="add-card">
-              {' '}
-              Add a card...{' '}
-            </div>
-          )}
-        </div>
-      </Board>
+    return connectDragPreview(
+      connectDragSource(
+        connectDropTarget(
+          <div>
+            <Board>
+              <div className="list">
+                <h3 className="list-title">
+                  <Row>
+                    <Col>{this.props.board.namelanes}</Col>
+                    <Col>
+                      <Dropdown overlay={menu} className="menudropdown">
+                        <a className="ant-dropdown-link">
+                          <Icon type="ellipsis" />
+                        </a>
+                      </Dropdown>
+                    </Col>
+                  </Row>
+                </h3>
+                <ul className="list-items" style={{ wordWrap: 'break-word' }}>
+                  {card}
+                </ul>
+                {this.state.isAddCard ? (
+                  <AddCard
+                    idcard={this.props.board._id}
+                    handleCancel={this.handleCancel}
+                  />
+                ) : (
+                  <div onClick={this.handleAddCard} className="add-card">
+                    Add a card...
+                  </div>
+                )}
+              </div>
+            </Board>
+          </div>
+        )
+      )
     )
   }
 }
 
-export default LanesList
+const mapStateToProps = state => {
+  return {
+    boards: state.homes.boards
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  onMoveBoard(item, allBoard) {
+    console.log('items', item)
+    dispatch(moveBoard(item, allBoard))
+  }
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  DragSource('BOARD', boardSource, collectDragSource)(
+    DropTarget('BOARD', boardTarget, collectDropTarget)(LanesList)
+  )
+)
