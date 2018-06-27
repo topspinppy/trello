@@ -85,7 +85,16 @@ class Lanes extends Component {
                 </a>
               </div>
             ) : (
-              <div onClick={this.handleOpenCard}>"Add a list..."</div>
+              <div
+                style={{
+                  padding: '20px',
+                  fontSize: '20px',
+                  fontWeight: 'bold'
+                }}
+                onClick={this.handleOpenCard}
+              >
+                "Add a list..."
+              </div>
             )}
           </div>
         </section>

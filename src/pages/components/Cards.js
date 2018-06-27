@@ -3,22 +3,6 @@ import ModalData from './ModalData'
 import { DragSource } from 'react-dnd'
 import { DropTarget } from 'react-dnd'
 
-// const boardSource = {
-//   beginDrag(props, component) {
-//     console.log("beginDrag" , props)
-//     const item = {
-//       id: props.key,
-//       title: props.card.namecards,
-//       index: props.index,
-//     }
-//     return item
-//   },
-
-//   isDragging(props, monitor) {
-//     return props.id === monitor.getItem().id
-//   },
-// }
-
 class Cards extends Component {
   constructor(props) {
     super(props)
@@ -41,14 +25,23 @@ class Cards extends Component {
   }
 
   render() {
+    const url = `http://localhost:5000/${this.props.card.Attachment}`
     return (
       <div>
         <li onClick={this.toggle}>
+          {this.props.card.Attachment ? (
+            <img
+              src={url}
+              alt="attachmentimg"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          ) : null}
           <div style={{ whiteSpace: 'normal' }}>
             {this.props.card.namecards}
           </div>
         </li>
         <ModalData
+          urlimg={url}
           handleDeleteCards={this.handleDeleteCard}
           editCard={this.props.editCard}
           data={this.props.card}

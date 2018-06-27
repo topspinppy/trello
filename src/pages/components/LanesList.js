@@ -17,6 +17,7 @@ import {
   ModalBody,
   ModalFooter
 } from 'antd'
+import swal from 'sweetalert2'
 
 const boardSource = {
   beginDrag(props, component) {
@@ -161,7 +162,26 @@ class LanesList extends Component {
   handleDrop = draggedProps => {
     console.log('You Dropped', draggedProps.name)
   }
-
+  handleShowDialogDeleteLanes = (e, idlanes) => {
+    swal({
+      title: 'แจ้งเตือน !',
+      text: 'คุณแน่ใจหรือไม่ว่าคุณต้องการลบ Lanes',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(result => {
+      if (result.value) {
+        swal(
+          'ลบเรียบร้อย!',
+          'Lanes ของท่านถูกลบออกจากระบบเรียบร้อย.',
+          'success'
+        )
+        this.props.handleDeleteBoard(e, this.props.board._id)
+      }
+    })
+  }
   render() {
     const {
       connectDragPreview,
@@ -183,14 +203,15 @@ class LanesList extends Component {
       <Menu>
         <Menu.Item>
           <a
-            onClick={e => this.props.handleDeleteBoard(e, this.props.board._id)}
+            onClick={e =>
+              this.handleShowDialogDeleteLanes(e, this.props.board._id)
+            }
           >
             DeleteCard
           </a>
         </Menu.Item>
       </Menu>
     )
-
     return connectDragPreview(
       connectDragSource(
         connectDropTarget(

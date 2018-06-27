@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './style/index.css'
+import 'antd/lib/upload/style/css'
 import 'antd/dist/antd.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App'

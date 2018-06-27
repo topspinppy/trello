@@ -8,11 +8,16 @@ import {
   Row,
   Col
 } from 'reactstrap'
+import { Upload, Icon, message } from 'antd'
+
+const Dragger = Upload.Dragger
 
 class ModalData extends Component {
   state = {
     description: '',
-    descriptiontoggleedit: false
+    descriptiontoggleedit: false,
+    previewVisible: false,
+    previewImage: ''
   }
   handleToggleEditTrue = () => {
     this.setState({ descriptiontoggleedit: true })
@@ -27,7 +32,32 @@ class ModalData extends Component {
       [field]: e.target.value
     })
   }
+  handlePreview = file => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true
+    })
+  }
+
+  handleChange = ({ fileList }) => this.setState({ fileList })
+
   render() {
+    const props = {
+      name: 'file',
+      multiple: true,
+      action: `http://localhost:5000/manage/postsupload/${this.props.data._id}`,
+      onChange(info) {
+        const status = info.file.status
+        if (status !== 'uploading') {
+          console.log(info.file, info.fileList)
+        }
+        if (status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully.`)
+        } else if (status === 'error') {
+          message.error(`${info.file.name} file upload failed.`)
+        }
+      }
+    }
     return (
       <div>
         <Modal
@@ -39,12 +69,12 @@ class ModalData extends Component {
           <ModalHeader toggle={this.props.toggle}>
             {this.props.data.namecards}
           </ModalHeader>
-          <ModalBody>
+          <ModalBody style={{ height: 'auto' }}>
             <Row>
               <Col xs="8">
                 <Row>
                   <Col xs="1">
-                    <i class="fas fa-align-left" />
+                    <i className="fas fa-align-left" />
                   </Col>
                   <Col xs="6">
                     <b>
@@ -57,7 +87,7 @@ class ModalData extends Component {
                   <Col
                     xs="7"
                     onClick={this.handleToggleEditTrue}
-                    style={{ 'white-space': 'normal' }}
+                    style={{ whiteSpace: 'normal' }}
                   >
                     {this.state.descriptiontoggleedit ? (
                       <div>
@@ -65,9 +95,8 @@ class ModalData extends Component {
                           style={{ width: '165%', height: '300px' }}
                           onChange={e => this.handleChange('description', e)}
                           id="exampleText"
-                        >
-                          {this.props.data.description}
-                        </textarea>
+                          defaultValue={this.props.data.description}
+                        />
                         <button
                           type="button"
                           onClick={e =>
@@ -96,6 +125,33 @@ class ModalData extends Component {
                     )}
                     <br />
                     <br />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs="1">
+                    <i className="fas fa-upload" />
+                  </Col>
+                  <Col xs="7">
+                    <b>
+                      <h5>File Attachment</h5>
+                    </b>
+                  </Col>
+                </Row>
+                <Row style={{ marginBottom: '20px' }}>
+                  <Col xs="1" />
+                  <Col xs="11">
+                    <Dragger {...props} style={{ width: '100%' }}>
+                      <p className="ant-upload-drag-icon">
+                        <Icon type="inbox" />
+                      </p>
+                      <p className="ant-upload-text">
+                        Click or drag file to this area to upload
+                      </p>
+                      <p className="ant-upload-hint">
+                        Support for a single or bulk upload. Strictly prohibit
+                        from uploading company data or other band files
+                      </p>
+                    </Dragger>
                   </Col>
                 </Row>
               </Col>
