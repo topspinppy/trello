@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Upload, Icon, message, Tag } from 'antd'
 import {
   Button,
   Modal,
@@ -6,18 +7,26 @@ import {
   ModalBody,
   ModalFooter,
   Row,
-  Col
+  Col,
+  Popover,
+  PopoverHeader,
+  PopoverBody
 } from 'reactstrap'
-import { Upload, Icon, message } from 'antd'
+import PopOverTag from './PopOverTag'
 
 const Dragger = Upload.Dragger
 
 class ModalData extends Component {
-  state = {
-    description: '',
-    descriptiontoggleedit: false,
-    previewVisible: false,
-    previewImage: ''
+  constructor(props) {
+    super(props)
+    this.toggle = this.toggle.bind(this)
+    this.state = {
+      description: '',
+      descriptiontoggleedit: false,
+      previewVisible: false,
+      previewImage: '',
+      popoverOpen: false
+    }
   }
   handleToggleEditTrue = () => {
     this.setState({ descriptiontoggleedit: true })
@@ -36,6 +45,11 @@ class ModalData extends Component {
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true
+    })
+  }
+  toggle() {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
     })
   }
 
@@ -58,6 +72,7 @@ class ModalData extends Component {
         }
       }
     }
+
     return (
       <div>
         <Modal
@@ -70,6 +85,20 @@ class ModalData extends Component {
             {this.props.data.namecards}
           </ModalHeader>
           <ModalBody style={{ height: 'auto' }}>
+            <Row>
+              <Col xs="12">
+                <Row>
+                  <Col xs="1">
+                    <i className="fas fa-tags" />
+                  </Col>
+                  <Col xs="11">
+                    {this.props.data.tag.map(tag => (
+                      <Tag color={tag}>{tag}</Tag>
+                    ))}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
             <Row>
               <Col xs="8">
                 <Row>
@@ -107,7 +136,7 @@ class ModalData extends Component {
                             )
                           }
                         >
-                          Save ffff
+                          Save
                         </button>
                         &nbsp;&nbsp;&nbsp;
                       </div>
@@ -167,6 +196,24 @@ class ModalData extends Component {
                   >
                     Delete Card
                   </Button>
+                  <Button
+                    block
+                    id="Popover1"
+                    color="info"
+                    style={{ marginTop: '8px' }}
+                    onClick={this.toggle}
+                  >
+                    Launch Popover
+                  </Button>
+                  <PopOverTag
+                    idcard={this.props.data._id}
+                    data={this.props.data}
+                    toggle={this.toggle}
+                    isOpen={this.state.popoverOpen}
+                    handlePopOverTagAddToDatabase={
+                      this.props.handlePopOverTagAddToDatabase
+                    }
+                  />
                 </Col>
               </Col>
             </Row>

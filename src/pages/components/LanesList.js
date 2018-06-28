@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import AddCard from './AddCard'
 import { DragSource } from 'react-dnd'
 import { DropTarget } from 'react-dnd'
-import Cards from './Cards'
+import Cardsinlane from './Cards'
 import { Container, Row, Col } from 'reactstrap'
-import { moveBoard } from '../../actions/homeAction'
+import { moveBoard, attachToBoard } from '../../actions/homeAction'
 import {
   Menu,
   Dropdown,
@@ -25,8 +25,10 @@ const boardSource = {
     const item = {
       id: props.board.id,
       title: props.board.namelanes,
-      index: props.index
+      index: props.index,
+      boardId: props.boardId
     }
+    console.log('items', item)
     return item
   },
 
@@ -45,19 +47,26 @@ const boardTarget = {
     const sourceId = sourceProps.id
     const sourceType = monitor.getItemType()
     const sourceIdx = sourceProps.index
+    const sourceBoard = sourceProps.boardId
+    const targetBoard = targetProps.board._id
+
     const item = {
       source: {
         sourceId,
-        sourceIdx
+        sourceIdx,
+        sourceBoard
       },
       target: {
         targetId,
-        targetIdx
+        targetIdx,
+        targetBoard
       }
     }
 
     if (targetId !== sourceId && sourceType === 'BOARD') {
       targetProps.onMoveBoard(item, targetProps.boards)
+    } else if (!targetProps.board.cards.length && sourceType === 'CARD') {
+      targetProps.attachToBoard(item, targetProps.boards)
     }
   }
 }
@@ -188,14 +197,16 @@ class LanesList extends Component {
       connectDropTarget,
       connectDragSource
     } = this.props
-    console.log('data = ', this.props.board)
+    console.log('data = ', this.props.board._id)
     const card = this.props.board.cards.map((card, index) => (
-      <Cards
+      <Cardsinlane
         handleDeleteCard={this.props.handleDeleteCard}
         editCard={this.props.editCard}
         index={index}
         key={card._id}
         card={card}
+        boardid={this.props.board._id}
+        handlePopOverTagAddToDatabase={this.props.handlePopOverTagAddToDatabase}
       />
     ))
 
@@ -262,6 +273,10 @@ const mapDispatchToProps = dispatch => ({
   onMoveBoard(item, allBoard) {
     console.log('items', item)
     dispatch(moveBoard(item, allBoard))
+  },
+  attachToBoard(item, allBoard) {
+    console.log('itemsssssssssssss', item)
+    dispatch(attachToBoard(item, allBoard))
   }
 })
 
@@ -270,6 +285,6 @@ export default connect(
   mapDispatchToProps
 )(
   DragSource('BOARD', boardSource, collectDragSource)(
-    DropTarget('BOARD', boardTarget, collectDropTarget)(LanesList)
+    DropTarget(['CARD', 'BOARD'], boardTarget, collectDropTarget)(LanesList)
   )
 )

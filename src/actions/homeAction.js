@@ -1,11 +1,6 @@
 import axios from 'axios'
 let _ = require('lodash')
-//ต้องกำหนด Export ในทุก Action
 
-// export const addBoard = text => ({
-//   type: 'ADD_BOARD',
-//   payload: text,
-// })
 const apiURL = 'http://localhost:5000/'
 
 const addBoard = text => dispatch => {
@@ -105,6 +100,89 @@ const moveBoard = (item, allBoard) => dispatch => {
   //Then update our state
 }
 
+const addTag = (tag, idcard) => dispatch => {
+  const data = {
+    tag,
+    idcard
+  }
+  axios.patch(`${apiURL}manage/cards/tag`, data).then(response => {
+    console.log(response)
+    dispatch({
+      type: 'ADD_TAG',
+      payload: response.data
+    })
+  })
+}
+
+const moveCard = (item, allBoard) => dispatch => {
+  console.log('moveCard Action !!')
+
+  const boards = Array.from(allBoard)
+  const startIndex = item.s.sourceIdx
+  const endIndex = item.t.targetIdx
+
+  //move in same lane
+  if (item.s.sourceBoard === item.t.targetBoard) {
+    console.log('same')
+    console.log('boards', boards)
+    const bIndex = boards.findIndex(b => b._id === item.s.sourceBoard)
+    const [removed] = boards[bIndex].cards.splice(startIndex, 1)
+
+    boards[bIndex].cards.splice(endIndex, 0, removed)
+
+    boards.map(b => b.cards.map((c, idx) => (c.index = idx)))
+
+    console.log('NewBoards =', boards)
+
+    dispatch({
+      type: 'MOVE_CARD',
+      payload: boards
+    })
+  }
+
+  //move to another lane
+  else {
+    console.log(boards)
+    const sbIndex = boards.findIndex(b => b._id === item.s.sourceBoard)
+    const tbIndex = boards.findIndex(b => b._id === item.t.targetBoard)
+    console.log('tbindex', tbIndex)
+    console.log('sbIndex', sbIndex)
+    const [removed] = boards[sbIndex].cards.splice(startIndex, 1)
+
+    boards[tbIndex].cards.splice(endIndex, 0, removed)
+
+    boards.map(b => b.cards.map((c, idx) => (c.index = idx)))
+
+    console.log('NewBoards =', boards)
+
+    dispatch({
+      type: 'MOVE_CARD',
+      payload: boards
+    })
+  }
+}
+
+const attachToBoard = (item, allBoard) => dispatch => {
+  console.log('attach Action !!')
+  const boards = Array.from(allBoard)
+  const startIndex = item.source.sourceIdx
+  const endIndex = item.target.targetIdx
+  const sbIndex = boards.findIndex(b => b._id === item.source.sourceBoard)
+  const tbIndex = boards.findIndex(b => b._id === item.target.targetBoard)
+
+  const [removed] = boards[sbIndex].cards.splice(startIndex, 1)
+  boards[tbIndex].cards.push(removed)
+
+  boards.map(b => b.cards.map((c, idx) => (c.index = idx)))
+
+  console.log('NewBoards =', boards)
+
+  dispatch({
+    type: 'MOVE_CARD',
+    payload: boards
+  })
+}
+
 export {
   addBoard,
   showBoard,
@@ -113,5 +191,8 @@ export {
   addBoardName,
   editCard,
   deleteCard,
-  moveBoard
+  moveBoard,
+  addTag,
+  moveCard,
+  attachToBoard
 }

@@ -4,7 +4,8 @@ import {
   showBoard,
   deleteBoard,
   editCard,
-  deleteCard
+  deleteCard,
+  addTag
 } from '../actions/homeAction'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
@@ -57,14 +58,15 @@ class HomePage extends Component {
     e.stopPropagation()
     this.props.handleDeleteCard(id)
   }
-
+  handlePopOverTagAddToDatabase = (tag, id) => {
+    this.props.handlePopOverTagAddToDatabase(tag, id)
+  }
   render() {
     console.log('Homepage props =', this.props)
     return (
       <Root>
         <Header />
-        <br />
-        <br />
+
         <Lanes
           editCard={this.handleEditCard}
           handleToggleAddCard={this.handleToggleAddCard}
@@ -72,6 +74,7 @@ class HomePage extends Component {
           handleDeleteBoard={this.handleDeleteBoard}
           handleAddBoard={this.props.handleAddBoard}
           handleDeleteCard={this.handleDeleteCard}
+          handlePopOverTagAddToDatabase={this.handlePopOverTagAddToDatabase}
         />
       </Root>
     )
@@ -93,6 +96,9 @@ const mapDispatchToProps = dispatch => {
     },
     handleDeleteCard(id) {
       dispatch(deleteCard(id))
+    },
+    handlePopOverTagAddToDatabase(tag, id) {
+      dispatch(addTag(tag, id))
     }
   }
 }

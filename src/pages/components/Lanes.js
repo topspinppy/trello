@@ -57,7 +57,9 @@ class Lanes extends Component {
         key={board._id}
         index={index}
         board={board}
+        boardId={this.props.boards._id}
         handleDeleteBoard={this.props.handleDeleteBoard}
+        handlePopOverTagAddToDatabase={this.props.handlePopOverTagAddToDatabase}
       />
     ))
     return (

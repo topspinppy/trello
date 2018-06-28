@@ -19,10 +19,13 @@ const homes = (state = INITIAL_STATE, action) => {
     case 'DELETE_CARD':
       return { ...state, boards: action.payload }
     case 'MOVE_BOARD':
-      console.log('moveboard', action.payload)
+      return { ...state, boards: action.payload }
+    case 'ADD_TAG':
+      return { ...state, boards: action.payload }
+    case 'MOVE_CARD':
       return { ...state, boards: action.payload }
     default:
-      return state //Return Initial State ลกับไปที่หน้าบ้าน ซึ่งเป็นตัวเดิมที่ส่งมา
+      return state
   }
 }
 
