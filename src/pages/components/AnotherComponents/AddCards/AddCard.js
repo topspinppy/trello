@@ -16,7 +16,6 @@ class AddCard extends Component {
     this.props.handleAddCard(id, this.state.changeAdd)
   }
   render() {
-    console.log('ttttt', this.props)
     return (
       <div>
         <Input

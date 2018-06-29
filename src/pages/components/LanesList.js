@@ -21,14 +21,12 @@ import swal from 'sweetalert2'
 
 const boardSource = {
   beginDrag(props, component) {
-    console.log('beginDrag', props)
     const item = {
       id: props.board.id,
       title: props.board.namelanes,
       index: props.index,
       boardId: props.boardId
     }
-    console.log('items', item)
     return item
   },
 
@@ -39,7 +37,6 @@ const boardSource = {
 
 const boardTarget = {
   drop(targetProps, monitor, component) {
-    console.log('targetDrop', targetProps)
     const targetId = targetProps.board._id
     const targetIdx = targetProps.index
 
@@ -168,9 +165,7 @@ class LanesList extends Component {
       isAddCard: false
     })
   }
-  handleDrop = draggedProps => {
-    console.log('You Dropped', draggedProps.name)
-  }
+  handleDrop = draggedProps => {}
   handleShowDialogDeleteLanes = (e, idlanes) => {
     swal({
       title: 'แจ้งเตือน !',
@@ -197,7 +192,6 @@ class LanesList extends Component {
       connectDropTarget,
       connectDragSource
     } = this.props
-    console.log('data = ', this.props.board._id)
     const card = this.props.board.cards.map((card, index) => (
       <Cardsinlane
         handleDeleteCard={this.props.handleDeleteCard}
@@ -271,11 +265,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onMoveBoard(item, allBoard) {
-    console.log('items', item)
     dispatch(moveBoard(item, allBoard))
   },
   attachToBoard(item, allBoard) {
-    console.log('itemsssssssssssss', item)
     dispatch(attachToBoard(item, allBoard))
   }
 })

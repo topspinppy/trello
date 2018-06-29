@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import ModalData from './ModalData'
+import ModalData from './AnotherComponents/Modals/index'
 import { DragSource } from 'react-dnd'
 import { DropTarget } from 'react-dnd'
 import { moveCard } from '../../actions/homeAction'
 
 const cardSource = {
   beginDrag(props, component) {
-    console.log('cardSource =', props)
     const item = {
       id: props.card._id,
       title: props.card.namecards,
@@ -45,7 +44,6 @@ const cardTarget = {
       }
     }
     if (targetId !== sourceId && sourceType === 'CARD') {
-      console.log('item =', item)
       targetProps.onMoveCard(item, targetProps.boards)
     }
   }
@@ -132,7 +130,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onMoveCard(item, boards) {
-    console.log('items', item)
     dispatch(moveCard(item, boards))
   }
 })

@@ -21,8 +21,6 @@ class PopOverTag extends Component {
     )
   }
   render() {
-    console.log('state =', this.state)
-    console.log('props =', this.props.data)
     const tagColor = [
       'magenta',
       'red',

@@ -12,7 +12,7 @@ import {
   PopoverHeader,
   PopoverBody
 } from 'reactstrap'
-import PopOverTag from './PopOverTag'
+import PopOverTag from '../PopOver/PopOverTag'
 
 const Dragger = Upload.Dragger
 
@@ -36,7 +36,7 @@ class ModalData extends Component {
     this.setState({ description: txt, descriptiontoggleedit: false })
   }
   handleDel = () => {}
-  handleChange = (field, e) => {
+  handleChangeTextArea = (field, e) => {
     this.setState({
       [field]: e.target.value
     })
@@ -63,7 +63,6 @@ class ModalData extends Component {
       onChange(info) {
         const status = info.file.status
         if (status !== 'uploading') {
-          console.log(info.file, info.fileList)
         }
         if (status === 'done') {
           message.success(`${info.file.name} file uploaded successfully.`)
@@ -122,10 +121,12 @@ class ModalData extends Component {
                       <div>
                         <textarea
                           style={{ width: '165%', height: '300px' }}
-                          onChange={e => this.handleChange('description', e)}
-                          id="exampleText"
-                          defaultValue={this.props.data.description}
-                        />
+                          onChange={e =>
+                            this.handleChangeTextArea('description', e)
+                          }
+                        >
+                          {this.props.data.description}
+                        </textarea>
                         <button
                           type="button"
                           onClick={e =>
@@ -138,7 +139,6 @@ class ModalData extends Component {
                         >
                           Save
                         </button>
-                        &nbsp;&nbsp;&nbsp;
                       </div>
                     ) : this.props.data.description === '' ? (
                       <div>

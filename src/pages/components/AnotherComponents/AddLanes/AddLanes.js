@@ -12,6 +12,7 @@ class AddLanes extends Component {
               value={this.props.boardName}
             />
             <Button
+              color="success"
               style={{ marginTop: '6px' }}
               onClick={e => this.props.handleClick(e, this.props.boardName)}
             >
