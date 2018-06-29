@@ -6,11 +6,11 @@ import {
   editCard,
   deleteCard,
   addTag
-} from '../actions/homeAction'
+} from '../../actions/homeAction'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import Lanes from './components/Lanes'
-import Header from '../pages/components/Header'
+import Lanes from '../components/Lanes'
+import Header from '../components/AnotherComponents/Header/index'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -62,11 +62,9 @@ class HomePage extends Component {
     this.props.handlePopOverTagAddToDatabase(tag, id)
   }
   render() {
-    console.log('Homepage props =', this.props)
     return (
       <Root>
         <Header />
-
         <Lanes
           editCard={this.handleEditCard}
           handleToggleAddCard={this.handleToggleAddCard}

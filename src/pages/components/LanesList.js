@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import AddCard from './AddCard'
+import AddCard from './AnotherComponents/AddCards/index'
 import { DragSource } from 'react-dnd'
 import { DropTarget } from 'react-dnd'
 import Cardsinlane from './Cards'

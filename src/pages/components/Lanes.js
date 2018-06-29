@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import LanesList from './LanesList'
 import { DropTarget } from 'react-dnd'
-import { Button, Input } from 'reactstrap'
-import PropTypes from 'prop-types'
+import AddLanes from '../components/AnotherComponents/AddLanes/index'
 
 const Containers = styled.div`
   white-space: nowrap;
@@ -67,37 +66,14 @@ class Lanes extends Component {
         <section className="lists-container">
           {lanes}
           <div className="list">
-            {this.state.openCard ? (
-              <div style={{ padding: '9px' }}>
-                <Input
-                  onChange={this.handleChange}
-                  value={this.state.boardName}
-                />
-                <Button
-                  style={{ marginTop: '6px' }}
-                  onClick={e => this.handleClick(e, this.state.boardName)}
-                >
-                  Add
-                </Button>
-                <a
-                  style={{ marginLeft: '18px' }}
-                  onClick={this.handleCloseCard}
-                >
-                  <i className="fas fa-times" />
-                </a>
-              </div>
-            ) : (
-              <div
-                style={{
-                  padding: '20px',
-                  fontSize: '20px',
-                  fontWeight: 'bold'
-                }}
-                onClick={this.handleOpenCard}
-              >
-                "Add a list..."
-              </div>
-            )}
+            <AddLanes
+              handleOpenCard={this.handleOpenCard}
+              handleCloseCard={this.handleCloseCard}
+              openCard={this.state.openCard}
+              handleChange={this.handleChange}
+              boardName={this.state.boardName}
+              handleClick={this.handleClick}
+            />
           </div>
         </section>
       </Containers>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { addCard } from '../../actions/homeAction'
+import { addCard } from '../../../../actions/homeAction'
 import { connect } from 'react-redux'
 import { Input } from 'reactstrap'
+
 class AddCard extends Component {
   state = {
     changeAdd: ''

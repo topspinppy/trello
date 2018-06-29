@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Navbar, NavbarBrand } from 'reactstrap'
-import logotrello from '../../images/trello-logo-blue.png'
+import logotrello from '../../../../images/trello-logo-blue.png'
 import styled from 'styled-components'
 
 const NavbarBrands = styled(NavbarBrand)`
@@ -12,7 +12,7 @@ const NavbarBrands = styled(NavbarBrand)`
 class Header extends Component {
   render() {
     return (
-      <div>
+      <div style={{ marginBottom: '120px' }}>
         <Navbar
           style={{ boxShadow: '5px 3px 28px -15px rgba(0,0,0,0.75)' }}
           color="light"
@@ -23,10 +23,6 @@ class Header extends Component {
             <img src={logotrello} width="90px" alt="trello" />
           </NavbarBrands>
         </Navbar>
-        <br />
-        <br />
-        <br />
-        <br />
       </div>
     )
   }

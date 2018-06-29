@@ -7,25 +7,35 @@ const addBoard = text => dispatch => {
   let data = {
     namelanes: text
   }
-  axios.post(`${apiURL}lanes`, data).then(response => {
+  axios.post(`${apiURL}lanes`, data).then(res => {
+    console.log('addboard res =', res.data)
+    let da = res.data
+    da.map(d => {
+      return d.cards.sort((a, b) => a.index - b.index)
+    })
     dispatch({
       type: 'ADD_BOARD',
-      payload: response.data
+      payload: da
     })
   })
 }
 
 const showBoard = () => dispatch => {
-  axios.get(`${apiURL}lanes/all`).then(response => {
+  axios.get(`${apiURL}lanes/all`).then(res => {
+    console.log('res =', res)
+    let da = res.data
+    da.map(d => {
+      return d.cards.sort((a, b) => a.index - b.index)
+    })
     dispatch({
       type: 'SHOW_BOARD',
-      payload: response.data
+      payload: da
     })
   })
 }
 
 const deleteBoard = id => dispatch => {
-  axios.delete(`${apiURL}lanes/${id}`).then(response => {
+  axios.delete(`${apiURL}lanes/delete/${id}`).then(response => {
     console.log('foifkoek ', response)
     dispatch({
       type: 'DELETE_BOARD',
@@ -39,11 +49,14 @@ const addCard = (lanes, namecards) => dispatch => {
     namecards
   }
   console.log('dataaddCard = ', data)
-  axios.post(`${apiURL}manage/cards/${lanes}`, data).then(response => {
-    console.log('Form add card action: ', response)
+  axios.post(`${apiURL}manage/cards/${lanes}`, data).then(res => {
+    let da = res.data
+    da.map(d => {
+      return d.cards.sort((a, b) => a.index - b.index)
+    })
     dispatch({
       type: 'ADD_CARD',
-      payload: response.data
+      payload: da
     })
   })
 }
@@ -114,6 +127,12 @@ const addTag = (tag, idcard) => dispatch => {
   })
 }
 
+const sortArray = arr => {
+  return arr.map(arr => {
+    return arr.cards.sort((a, b) => a.index - b.index)
+  })
+}
+
 const moveCard = (item, allBoard) => dispatch => {
   console.log('moveCard Action !!')
 
@@ -130,40 +149,78 @@ const moveCard = (item, allBoard) => dispatch => {
 
     boards[bIndex].cards.splice(endIndex, 0, removed)
 
-    boards.map(b => b.cards.map((c, idx) => (c.index = idx)))
+    boards.map(b => b.cards.map((c, idx) => ((c._id = c._id), (c.index = idx))))
 
-    console.log('NewBoards =', boards)
+    const cards = boards.map(b => b.cards)
 
-    dispatch({
-      type: 'MOVE_CARD',
-      payload: boards
+    let Arraycard = []
+
+    for (let i = 0; i < cards.length; i++) {
+      for (let j = 0; j < cards[i].length; j++) {
+        Arraycard.push(cards[i][j])
+      }
+    }
+    console.log('NewBoards =', Arraycard)
+    axios.patch(`${apiURL}lanes/card`, Arraycard).then(res => {
+      console.log('res ', res)
+      // const da = sortArray(res.data)
+      let da = res.data
+      da.map(d => {
+        return d.cards.sort((a, b) => a.index - b.index)
+      })
+      console.log('da =', da)
+      dispatch({
+        type: 'MOVE_CARD',
+        payload: da
+      })
     })
   }
-
   //move to another lane
   else {
-    console.log(boards)
+    console.log('item =', item)
+    console.log('boards =', boards)
     const sbIndex = boards.findIndex(b => b._id === item.s.sourceBoard)
     const tbIndex = boards.findIndex(b => b._id === item.t.targetBoard)
-    console.log('tbindex', tbIndex)
-    console.log('sbIndex', sbIndex)
     const [removed] = boards[sbIndex].cards.splice(startIndex, 1)
 
     boards[tbIndex].cards.splice(endIndex, 0, removed)
+    boards.map(b => b.cards.map((c, idx) => ((c._id = c._id), (c.index = idx))))
 
-    boards.map(b => b.cards.map((c, idx) => (c.index = idx)))
+    const cards = boards.map(b => b.cards)
 
-    console.log('NewBoards =', boards)
+    let Arraycard = []
 
-    dispatch({
-      type: 'MOVE_CARD',
-      payload: boards
+    for (let i = 0; i < cards.length; i++) {
+      for (let j = 0; j < cards[i].length; j++) {
+        Arraycard.push(cards[i][j])
+      }
+    }
+
+    const data = {
+      card: Arraycard,
+      lane: boards
+    }
+
+    console.log('New board anotherlane', Arraycard)
+    console.log('New board anotherlane b', boards)
+    axios.patch(`${apiURL}lanes/cards`, data).then(res => {
+      console.log('res ', res)
+      let da = res.data
+      da.map(d => {
+        return d.cards.sort((a, b) => a.index - b.index)
+      })
+
+      dispatch({
+        type: 'MOVE_CARD',
+        payload: da
+      })
     })
   }
 }
 
 const attachToBoard = (item, allBoard) => dispatch => {
   console.log('attach Action !!')
+  console.log('items =', item)
   const boards = Array.from(allBoard)
   const startIndex = item.source.sourceIdx
   const endIndex = item.target.targetIdx
@@ -173,13 +230,26 @@ const attachToBoard = (item, allBoard) => dispatch => {
   const [removed] = boards[sbIndex].cards.splice(startIndex, 1)
   boards[tbIndex].cards.push(removed)
 
-  boards.map(b => b.cards.map((c, idx) => (c.index = idx)))
+  boards.map(b => {
+    b.cards.map((c, idx) => {
+      c.index = idx
+      c._id = c._id
+    })
+  })
 
   console.log('NewBoards =', boards)
 
-  dispatch({
-    type: 'MOVE_CARD',
-    payload: boards
+  axios.patch(`${apiURL}sortlanes/`, boards).then(res => {
+    console.log('res ', res)
+    let da = res.data
+    da.map(d => {
+      return d.cards.sort((a, b) => a.index - b.index)
+    })
+
+    dispatch({
+      type: 'MOVE_CARD',
+      payload: da
+    })
   })
 }
 
